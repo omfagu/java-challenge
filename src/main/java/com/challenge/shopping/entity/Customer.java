@@ -1,5 +1,6 @@
 package com.challenge.shopping.entity;
 
+import com.challenge.shopping.entity.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.Data;
@@ -9,8 +10,8 @@ import lombok.Data;
 @Table(name = "customers")
 public class Customer extends BaseEntity {
 
-
     private String name;
     private String email;
-    private String address;
+
+
 }
