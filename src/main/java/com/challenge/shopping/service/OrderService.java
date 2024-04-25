@@ -10,5 +10,8 @@ public interface OrderService {
     List<Order> getAllOrdersForCustomer(Long customerId);
 
     @Transactional
+    Order placeOrderWithProductIds(Long customerId, List<Long> productIds);
+
+    @Transactional
     Order placeOrder(Long customerId, List<Long> productIds);
 }

@@ -1,6 +1,6 @@
 package com.challenge.shopping.service;
 import com.challenge.shopping.entity.Cart;
-import com.challenge.shopping.entity.Product;
+
 
 
 public interface CartService {

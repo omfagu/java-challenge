@@ -43,6 +43,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Order placeOrderWithProductIds(Long customerId, List<Long> productIds) {
+        return null;
+    }
+
+    @Override
     @Transactional
     public Order placeOrder(Long customerId, List<Long> productIds) {
         double totalPrice = 0;
