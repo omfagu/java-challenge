@@ -31,4 +31,13 @@ public class Cart extends BaseEntity {
         cartItems.removeIf(cartItem -> cartItem.getProduct().equals(product));
         totalPrice -= product.getPrice();
     }
+
+    public void calculateTotalPrice() {
+        double total = 0.0;
+        for (CartItem item : cartItems) {
+            total += item.getProduct().getPrice() * item.getQuantity();
+        }
+        this.totalPrice = total;
+    }
+
 }

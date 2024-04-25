@@ -27,6 +27,13 @@ public class Order extends BaseEntity {
 
     private double totalPrice;
 
+    public void calculateTotalPrice() {
+        double total = 0.0;
+        for (OrderItem item : orderItems) {
+            total += item.getProduct().getPrice() * item.getQuantity();
+        }
+        this.totalPrice = total;
+    }
 
     public void setCustomerId(Long customerId) {
     }

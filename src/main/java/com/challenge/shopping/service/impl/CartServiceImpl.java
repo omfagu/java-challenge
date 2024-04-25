@@ -40,20 +40,26 @@ public class CartServiceImpl implements CartService {
         cartRepository.save(cart);
     }
 
+
     @Override
     public Cart addProductToCart(Long customerId, Long productId, int quantity) {
         Cart cart = getCartByCustomerId(customerId);
         Product product = productService.getProductById(productId);
         cart.addItem(product, quantity);
+        cart.calculateTotalPrice();
         return cartRepository.save(cart);
     }
-
 
     @Override
     public Cart removeProductFromCart(Long customerId, Long productId) {
         Cart cart = getCartByCustomerId(customerId);
         Product product = productService.getProductById(productId);
         cart.removeItem(product);
+        cart.calculateTotalPrice();
         return cartRepository.save(cart);
     }
+
+
+
+
 }
