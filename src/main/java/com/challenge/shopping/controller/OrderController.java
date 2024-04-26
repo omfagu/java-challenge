@@ -20,10 +20,10 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @PostMapping("/{customerId}")
-    public ResponseEntity<Order> placeOrder(@PathVariable Long customerId) {
-        Order newOrder = orderService.placeOrder(customerId);
-        return ResponseEntity.ok(newOrder);
+    @PostMapping("/{customerId}/products")
+    public ResponseEntity<Order> placeOrderWithProductIds(@PathVariable Long customerId, @RequestBody List<Long> productIds) {
+        Order order = orderService.placeOrder(customerId, productIds);
+        return ResponseEntity.ok(order);
     }
 
     @GetMapping("/{orderCode}")
