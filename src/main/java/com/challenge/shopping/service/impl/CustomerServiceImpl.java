@@ -1,6 +1,8 @@
 package com.challenge.shopping.service.impl;
 
+import com.challenge.shopping.entity.Cart;
 import com.challenge.shopping.entity.Customer;
+import com.challenge.shopping.repository.CartRepository;
 import com.challenge.shopping.repository.CustomerRepository;
 import com.challenge.shopping.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,15 +14,23 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final CartRepository cartRepository;
 
     @Autowired
-    public CustomerServiceImpl(CustomerRepository customerRepository) {
+    public CustomerServiceImpl(CustomerRepository customerRepository, CartRepository cartRepository) {
         this.customerRepository = customerRepository;
+        this.cartRepository = cartRepository;
     }
 
-    @Override
     public Customer addCustomer(Customer customer) {
-        return customerRepository.save(customer);
+        customer = customerRepository.save(customer);
+        Cart cart = new Cart();
+        cart.setCustomer(customer);
+        cartRepository.save(cart);
+        customer.setCart(cart);
+        customerRepository.save(customer);
+
+        return customer;
     }
 
     @Override

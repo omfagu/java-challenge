@@ -29,7 +29,7 @@ public class CartController {
         return ResponseEntity.ok(updatedCart);
     }
 
-    @PostMapping("/{customerId}/removeProduct")
+    @DeleteMapping("/{customerId}/removeProduct")
     public ResponseEntity<Cart> removeProductFromCart(@PathVariable Long customerId, @RequestParam Long productId) {
         Cart updatedCart = cartService.removeProductFromCart(customerId, productId);
         return ResponseEntity.ok(updatedCart);

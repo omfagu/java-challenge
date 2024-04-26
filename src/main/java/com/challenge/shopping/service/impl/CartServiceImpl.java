@@ -75,22 +75,26 @@ public class CartServiceImpl implements CartService {
         cart.getCartItems().add(cartItem);
         cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
     }
+
     @Override
     public Cart removeProductFromCart(Long customerId, Long productId) {
         Cart cart = getCartByCustomerId(customerId);
-        Product product = productService.getProductById(productId);
 
         CartItem cartItem = cart.getCartItems().stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Product not found in cart with ID: " + productId));
+                .orElseThrow(() -> new RuntimeException("Product not found in cart"));
 
-        cart.getCartItems().remove(cartItem);
-        product.setStock(product.getStock() + cartItem.getQuantity());
+        if (cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+        } else {
+            cart.getCartItems().remove(cartItem);
+        }
 
-        productService.updateProduct(productId, product);
-        Cart updatedCart = cartRepository.save(cart);
+        cart.setTotalPrice(cart.getCartItems().stream()
+                .mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity())
+                .sum());
 
-        return updatedCart;
+        return cartRepository.save(cart);
     }
 }
