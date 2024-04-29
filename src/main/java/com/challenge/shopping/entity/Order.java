@@ -35,6 +35,4 @@ public class Order extends BaseEntity {
         this.totalPrice = total;
     }
 
-    public void setCustomerId(Long customerId) {
-    }
 }

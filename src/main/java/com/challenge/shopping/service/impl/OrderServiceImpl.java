@@ -1,8 +1,10 @@
 package com.challenge.shopping.service.impl;
 
+import com.challenge.shopping.entity.Customer;
 import com.challenge.shopping.entity.Order;
 import com.challenge.shopping.entity.OrderItem;
 import com.challenge.shopping.entity.Product;
+import com.challenge.shopping.repository.CustomerRepository;
 import com.challenge.shopping.repository.OrderItemRepository;
 import com.challenge.shopping.repository.OrderRepository;
 import com.challenge.shopping.repository.ProductRepository;
@@ -20,11 +22,13 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OrderItemRepository orderItemRepository;
 
+    private final CustomerRepository customerRepository;
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, OrderItemRepository orderItemRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, OrderItemRepository orderItemRepository, CustomerRepository customerRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.orderItemRepository = orderItemRepository;
+        this.customerRepository = customerRepository;
     }
 
     @Override
@@ -52,12 +56,14 @@ public class OrderServiceImpl implements OrderService {
     public Order placeOrder(Long customerId, List<Long> productIds) {
         double totalPrice = 0;
         Order newOrder = new Order();
-        newOrder.setCustomerId(customerId);
+
+        Customer customer = customerRepository.findById(customerId)  // Müşteriyi bul
+                .orElseThrow(() -> new RuntimeException("Customer not found with id: " + customerId));
+        newOrder.setCustomer(customer);
 
         for (Long productId : productIds) {
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
-
 
             if (product.getStock() <= 0) {
                 throw new RuntimeException("Product is out of stock: " + productId);
@@ -69,12 +75,9 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setQuantity(1);
             orderItem.setPriceAtOrder(product.getPrice());
 
-
             orderItemRepository.save(orderItem);
 
-
             totalPrice += product.getPrice();
-
 
             product.setStock(product.getStock() - 1);
             productRepository.save(product);
@@ -84,3 +87,4 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.save(newOrder);
     }
 }
+

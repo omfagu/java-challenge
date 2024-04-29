@@ -45,9 +45,9 @@ public class CartControllerTest {
                 .andExpect(status().isOk());
     }
 
-/*    @Test
+    @Test
     public void testRemoveProductFromCart() throws Exception {
-        Long customerId = 4L;
+        Long customerId = 6L;
         Long productId = 1L;
 
         mockMvc.perform(delete("/api/carts/" + customerId + "/removeProduct")
@@ -58,10 +58,10 @@ public class CartControllerTest {
 
     @Test
     public void testEmptyCart() throws Exception {
-        Long customerId = 7L;
+        Long customerId = 4L;
 
         mockMvc.perform(post("/api/carts/" + customerId + "/empty")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-    }*/
+    }
 }
