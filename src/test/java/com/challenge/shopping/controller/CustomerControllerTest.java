@@ -1,5 +1,7 @@
 package com.challenge.shopping.controller;
 
+import com.challenge.shopping.entity.Customer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,13 +19,20 @@ public class CustomerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-/*    @Test
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
     public void testAddCustomer() throws Exception {
-        String customerJson = "{\"name\":\"Müşteri Adı\",\"email\":\"musteri@email.com\"}";
+
+        Customer customer = new Customer();
+        customer.setName("John Doe");
+        customer.setEmail("john.doe@example.com");
+
 
         mockMvc.perform(post("/api/customers")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(customerJson))
+                        .content(objectMapper.writeValueAsString(customer)))
                 .andExpect(status().isOk());
-    }*/
+    }
 }

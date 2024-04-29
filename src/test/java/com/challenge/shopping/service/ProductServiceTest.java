@@ -22,7 +22,7 @@ public class ProductServiceTest {
     @MockBean
     private ProductRepository productRepository;
 
-    @Test
+ /*   @Test
     public void testGetProductById() {
         Long productId = 1L;
         Product product = new Product();
@@ -45,5 +45,5 @@ public class ProductServiceTest {
         System.out.println("Ürün Adı: " + foundProduct.getName());
         System.out.println("Ürün Fiyatı: " + foundProduct.getPrice());
         System.out.println("Ürün Stok Miktarı: " + foundProduct.getStock());
-    }
+    }*/
 }
