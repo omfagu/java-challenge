@@ -21,5 +21,4 @@ public class Cart extends BaseEntity {
 
     private double totalPrice;
 
-
 }
