@@ -29,6 +29,7 @@ public class CartControllerTest {
                 .andExpect(status().isOk());
 }
 
+
     @Test
     public void testRemoveProductFromCart() throws Exception {
         Long customerId = 4L;
