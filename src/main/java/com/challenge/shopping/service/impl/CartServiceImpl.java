@@ -3,6 +3,7 @@ package com.challenge.shopping.service.impl;
 import com.challenge.shopping.entity.Cart;
 import com.challenge.shopping.entity.CartItem;
 import com.challenge.shopping.entity.Product;
+import com.challenge.shopping.repository.CartItemRepository;
 import com.challenge.shopping.repository.CartRepository;
 import com.challenge.shopping.service.CartService;
 import com.challenge.shopping.service.ProductService;
@@ -14,11 +15,13 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
     private final ProductService productService;
+    private final CartItemRepository cartItemRepository;
 
     @Autowired
-    public CartServiceImpl(CartRepository cartRepository, ProductService productService) {
+    public CartServiceImpl(CartRepository cartRepository, ProductService productService, CartItemRepository cartItemRepository) {
         this.cartRepository = cartRepository;
         this.productService = productService;
+        this.cartItemRepository = cartItemRepository;
     }
 
     @Override
@@ -45,6 +48,7 @@ public class CartServiceImpl implements CartService {
                 .orElseThrow(() -> new RuntimeException("Cart not found with ID: " + cartId));
 
         cart.getCartItems().clear();
+        cart.setTotalPrice(0.0);
         cartRepository.save(cart);
     }
 
@@ -57,7 +61,8 @@ public class CartServiceImpl implements CartService {
             throw new RuntimeException("Not enough stock for product with ID: " + productId);
         }
 
-        addItem(cart, product, quantity);
+        CartItem cartItem = addItem(cart, product, quantity);
+        cartItemRepository.save(cartItem);
         product.setStock(product.getStock() - quantity);
 
         productService.updateProduct(productId, product);
@@ -66,7 +71,7 @@ public class CartServiceImpl implements CartService {
         return updatedCart;
     }
 
-    private void addItem(Cart cart, Product product, int quantity) {
+    private CartItem addItem(Cart cart, Product product, int quantity) {
         CartItem cartItem = new CartItem();
         cartItem.setProduct(product);
         cartItem.setQuantity(quantity);
@@ -74,6 +79,8 @@ public class CartServiceImpl implements CartService {
 
         cart.getCartItems().add(cartItem);
         cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
+
+        return cartItem;
     }
 
     @Override
@@ -96,5 +103,4 @@ public class CartServiceImpl implements CartService {
                 .sum());
 
         return cartRepository.save(cart);
-    }
-}
+    }}

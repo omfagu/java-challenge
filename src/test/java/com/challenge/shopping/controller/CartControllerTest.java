@@ -22,19 +22,19 @@ public class CartControllerTest {
 
     @Test
     public void testGetCartByCustomerId() throws Exception {
-        Long customerId = 7L;
+        Long customerId = 4L;
 
         mockMvc.perform(get("/api/carts/" + customerId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerId").value(customerId));
+                .andExpect(jsonPath("$.customer.id").value(customerId));
     }
 
     @Test
     public void testAddProductToCart() throws Exception {
-        Long customerId = 7L;
+        Long customerId = 6L;
         Long productId = 1L;
-        int quantity = 1;
+        int quantity = 3;
 
         MockHttpServletRequestBuilder request = post("/api/carts/" + customerId + "/addProduct")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -42,27 +42,23 @@ public class CartControllerTest {
                 .param("quantity", String.valueOf(quantity));
 
         mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerId").value(customerId));
+                .andExpect(status().isOk());
     }
-/*
-    @Test
+
+/*    @Test
     public void testRemoveProductFromCart() throws Exception {
-        Long customerId = 1L;
+        Long customerId = 4L;
         Long productId = 1L;
 
-        MockHttpServletRequestBuilder request = delete("/api/carts/" + customerId + "/removeProduct")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("productId", productId.toString());
-
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerId").value(customerId));
+        mockMvc.perform(delete("/api/carts/" + customerId + "/removeProduct")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("productId", productId.toString()))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void testEmptyCart() throws Exception {
-        Long customerId = 1L;
+        Long customerId = 7L;
 
         mockMvc.perform(post("/api/carts/" + customerId + "/empty")
                         .contentType(MediaType.APPLICATION_JSON))

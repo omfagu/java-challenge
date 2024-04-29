@@ -1,6 +1,6 @@
 package com.challenge.shopping.entity;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -19,6 +19,7 @@ public class CartItem extends BaseEntity {
     private Product product;
 
     @ManyToOne
+    @JsonIgnore
     private Cart cart;
 
     private int quantity;
